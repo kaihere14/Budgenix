@@ -1,9 +1,8 @@
 # Budgenix (FinBuddy)  
 
-![Build Status](https://img.shields.io/github/actions/workflow/status/kaihere14/Budgenix/ci.yml?branch=main&label=CI) ![License](https://img.shields.io/github/license/kaihere14/Budgenix) ![Version](https://img.shields.io/github/package-json/v/kaihere14/Budgenix)  
+![Build Status](https://img.shields.io/github/actions/workflow/status/kaihere14/Budgenix/ci.yml?branch=main&label=CI) ![License](https://img.shields.io/github/license/kaihere14/Budgenix) ![Version](https://img.shields.io/github/package-json/v/kaihere14/Budgenix) ![Coverage](https://img.shields.io/codecov/c/github/kaihere14/Budgenix?label=coverage)  
 
 **Budgenix** (aka *FinBuddy*) is a full‑stack personal finance assistant that lets users track expenses, manage budgets, and get AI‑powered insights in real‑time. The web client is built with React + Vite, TailwindCSS and daisyUI, while the backend is a TypeScript‑powered Express API backed by MongoDB. Integrated AI services (Google Gemini & Agora) provide smart expense categorisation, budgeting recommendations, and conversational assistance.
-
 
 ---
 
@@ -110,7 +109,6 @@ Create a free MongoDB Atlas cluster or run a local instance and note the connect
 git clone https://github.com/kaihere14/Budgenix.git
 cd Budgenix
 
-# Install root dependencies (none required currently)
 # Install client dependencies
 cd client
 pnpm install   # or `npm install`
@@ -353,4 +351,6 @@ For additional help, open an issue or join the discussion in the repository’s 
 - **React** – UI library, https://react.dev  
 - **TailwindCSS** – Utility‑first CSS framework, https://tailwindcss.com  
 - **daisyUI** – Tailwind component library, https://daisyui.com  
-- **Tremor** – Data visualisation components
+- **Tremor** – Data visualisation components  
+
+---
