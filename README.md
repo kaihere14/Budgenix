@@ -1,7 +1,6 @@
 # Budgenix (FinBuddy)  
 
-![Build Status](https://img.shields.io/github/actions/workflow/status/kaihere14/Budgenix/ci.yml?branch=main&label=CI) ![License](https://img.shields.io/github/license/kaihere14/Budgenix) ![Version](https://img.shields.io/github/package-json/v/kaihere14/Budgenix) ![Coverage](https://img.shields.io/codecov/c/github/kaihere14/Budgenix?label=coverage)
-
+![Build Status](https://img.shields.io/github/actions/workflow/status/kaihere14/Budgenix/ci.yml?branch=main&label=CI) ![License](https://img.shields.io/github/license/kaihere14/Budgenix) ![Version](https://img.shields.io/github/package-json/v/kaihere14/Budgenix) ![Coverage](https://img.shields.io/codecov/c/github/kaihere14/Budgenix?label=coverage) ![Docker](https://img.shields.io/docker/pulls/kaihere14/budgenix-server?label=Docker%20Pulls)
 
 **Budgenix** (aka *FinBuddy*) is a full‑stack personal finance assistant that lets users track expenses, manage budgets, and get AI‑powered insights in real‑time. The web client is built with React + Vite, TailwindCSS and daisyUI, while the backend is a TypeScript‑powered Express API backed by MongoDB. Integrated AI services (Google Gemini & Agora) provide smart expense categorisation, budgeting recommendations, and conversational assistance.
 
@@ -66,7 +65,7 @@ Targeted at anyone who wants a simple, modern UI combined with AI‑enhanced fin
 | **AI Services** | Google Gemini (`@google/generative-ai`), Agora RTC SDK (`agora-rtc-sdk-ng`) | Natural‑language insights & real‑time communication |
 | **Email** | Resend (`resend`) | Simple transactional email delivery |
 | **DevOps** | ESLint, TypeScript compiler, tsx (dev runner), nodemon, pnpm (or npm) | Fast feedback loops |
-| **Containerisation (optional)** | Docker (Dockerfile not included – add as needed) | Consistent production environment |
+| **Containerisation (optional)** | Docker (Dockerfile provided) | Consistent production environment |
 
 ---
 
@@ -348,6 +347,4 @@ docker run -d -p 3300:3300 --env-file .env budgenix-server
 | **MongoDB connection error** | Verify `MONGODB_URI` in `.env`. Ensure network access if using Atlas. |
 | **CORS blocked** | The server enables `cors()` for all origins in development. For production, configure allowed origins in `server/src/middleware/cors.ts` (if you add one). |
 | **JWT verification fails** | Check that `JWT_SECRET` matches between client and server and that the token is stored correctly (`localStorage`). |
-| **Agora token generation returns 401** | Ensure `AGORA_APP_ID` and `AGORA_APP_CERTIFICATE` are correct and that the channel name is alphanumeric. |
-| **Gemini API quota exceeded** | Upgrade your Google Cloud quota or implement request throttling. |
-| **`pnpm dev` hangs** | Delete `node_modules` and reinstall (`pnpm install`). Ensure Node
+| **Agora token generation returns 401** | Ensure `AGORA_APP_ID
