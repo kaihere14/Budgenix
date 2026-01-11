@@ -8,6 +8,7 @@
 
 ## Table of Contents  
 
+- [Overview](#overview)  
 - [Features](#features)  
 - [Tech Stack](#tech-stack)  
 - [Architecture Overview](#architecture-overview)  
@@ -18,13 +19,25 @@
 - [Usage](#usage)  
   - [Client](#client)  
   - [Server API](#server-api)  
+- [API Reference](#api-reference)  
 - [Development](#development)  
 - [Deployment](#deployment)  
-- [API Reference](#api-reference)  
 - [Contributing](#contributing)  
 - [Roadmap](#roadmap)  
 - [Troubleshooting & FAQ](#troubleshooting--faq)  
 - [License & Credits](#license--credits)  
+
+---
+
+## Overview  
+
+Budgenix is a personal‑finance SaaS that helps users:
+
+* **Track** daily expenses and categorize them automatically.  
+* **Set** and visualise monthly budgets with interactive charts.  
+* **Ask** an AI‑driven assistant for budgeting advice, expense insights, and real‑time conversation via voice/video.  
+
+Targeted at anyone who wants a simple, modern UI combined with AI‑enhanced financial guidance.
 
 ---
 
@@ -80,7 +93,7 @@ root
 │   │   └─ index.ts       # App bootstrap
 │   └─ tsconfig.json
 │
-└─ .gitignore, README.md, package.json (root only for repo metadata)
+└─ .gitignore, README.md, package.json (repo‑level metadata)
 ```
 
 * **Data Flow** – The client talks to the server through a RESTful JSON API (`/api/*`). The server validates JWTs, performs DB operations, and optionally calls external AI services before responding.  
@@ -203,6 +216,37 @@ curl -H "Authorization: Bearer $TOKEN" http://localhost:3300/api/expenses
 
 ---
 
+## API Reference  
+
+### Authentication  
+
+| Endpoint | Method | Body | Response |
+|----------|--------|------|----------|
+| `/api/users/register` | POST | `{email:string, password:string, name?:string}` | `201 Created` – `{userId, token}` |
+| `/api/users/login` | POST | `{email:string, password:string}` | `200 OK` – `{token, user}` |
+| `/api/users/me` | GET | – | `200 OK` – user object |
+| `/api/users/me` | PUT | `{name?, email?, password?}` | `200 OK` – updated user |
+
+### Expenses  
+
+| Endpoint | Method | Body | Response |
+|----------|--------|------|----------|
+| `/api/expenses` | GET | – | `200 OK` – array of expenses |
+| `/api/expenses` | POST | `{amount:number, date:string, description:string, category?:string}` | `201 Created` – created expense (category may be auto‑filled) |
+| `/api/expenses/:id` | PUT | same as POST | `200 OK` – updated expense |
+| `/api/expenses/:id` | DELETE | – | `204 No Content` |
+
+### AI  
+
+| Endpoint | Method | Body | Response |
+|----------|--------|------|----------|
+| `/api/gemini/insights` | POST | `{expenses: Expense[]}` | `200 OK` – `{insights:string}` |
+| `/api/agora/token` | POST | `{channel:string, uid?:number}` | `200 OK` – `{token:string, appId:string}` |
+
+*All protected routes require an `Authorization: Bearer <jwt>` header.*
+
+---
+
 ## Development  
 
 | Task | Command |
@@ -266,37 +310,6 @@ docker run -d -p 3300:3300 --env-file .env budgenix-server
 
 ---
 
-## API Reference  
-
-### Authentication  
-
-| Endpoint | Method | Body | Response |
-|----------|--------|------|----------|
-| `/api/users/register` | POST | `{email:string, password:string, name?:string}` | `201 Created` – `{userId, token}` |
-| `/api/users/login` | POST | `{email:string, password:string}` | `200 OK` – `{token, user}` |
-| `/api/users/me` | GET | – | `200 OK` – user object |
-| `/api/users/me` | PUT | `{name?, email?, password?}` | `200 OK` – updated user |
-
-### Expenses  
-
-| Endpoint | Method | Body | Response |
-|----------|--------|------|----------|
-| `/api/expenses` | GET | – | `200 OK` – array of expenses |
-| `/api/expenses` | POST | `{amount:number, date:string, description:string, category?:string}` | `201 Created` – created expense (category may be auto‑filled) |
-| `/api/expenses/:id` | PUT | same as POST | `200 OK` – updated expense |
-| `/api/expenses/:id` | DELETE | – | `204 No Content` |
-
-### AI  
-
-| Endpoint | Method | Body | Response |
-|----------|--------|------|----------|
-| `/api/gemini/insights` | POST | `{expenses: Expense[]}` | `200 OK` – `{insights:string}` |
-| `/api/agora/token` | POST | `{channel:string, uid?:number}` | `200 OK` – `{token:string, appId:string}` |
-
-*All protected routes require an `Authorization: Bearer <jwt>` header.*
-
----
-
 ## Contributing  
 
 1. **Fork** the repository.  
@@ -336,21 +349,4 @@ docker run -d -p 3300:3300 --env-file .env budgenix-server
 | **JWT verification fails** | Check that `JWT_SECRET` matches between client and server and that the token is stored correctly (`localStorage`). |
 | **Agora token generation returns 401** | Ensure `AGORA_APP_ID` and `AGORA_APP_CERTIFICATE` are correct and that the channel name is alphanumeric. |
 | **Gemini API quota exceeded** | Upgrade your Google Cloud quota or implement request throttling. |
-| **`pnpm dev` hangs** | Delete `node_modules` and reinstall (`pnpm install`). Ensure Node version ≥ 20. |
-
-For additional help, open an issue or join the discussion in the repository’s **Discussions** tab.
-
----
-
-## License & Credits  
-
-**License:** ISC – see the `LICENSE` file.  
-
-### Credits  
-
-- **React** – UI library, https://react.dev  
-- **TailwindCSS** – Utility‑first CSS framework, https://tailwindcss.com  
-- **daisyUI** – Tailwind component library, https://daisyui.com  
-- **Tremor** – Data visualisation components  
-
----
+| **`pnpm dev` hangs** | Delete `node_modules` and reinstall (`pnpm install`). Ensure Node
