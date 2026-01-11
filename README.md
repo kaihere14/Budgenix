@@ -1,6 +1,7 @@
 **Budgenix** – A modern, full‑stack personal budgeting web application  
 ============================================================
 
+
 ![Budgenix Logo](https://raw.githubusercontent.com/kaihere14/Budgenix/main/client/public/vite.svg)
 
 [![Node.js](https://img.shields.io/badge/Node.js-20.x-brightgreen?logo=node.js)](https://nodejs.org/)  
