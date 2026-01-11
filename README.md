@@ -1,449 +1,445 @@
-# Budgenix  
-**A modern, full‑stack budgeting platform**  
+**Budgenix** – A modern, full‑stack personal budgeting web application  
+============================================================
 
+![Budgenix Logo](https://raw.githubusercontent.com/kaihere14/Budgenix/main/client/public/vite.svg)
 
-
----
-
-## Badges  
-
-| Build | Coverage | Version | License |
-|-------|----------|---------|---------|
-| ![CI](https://github.com/kaihere14/Budgenix/actions/workflows/ci.yml/badge.svg) | ![Coverage](https://codecov.io/gh/kaihere14/Budgenix/branch/main/graph/badge.svg) | ![npm](https://img.shields.io/npm/v/budgenix.svg) | ![License](https://img.shields.io/github/license/kaihere14/Budgenix) |
-
-**Quick links**: [Demo](#demo) • [Documentation](#documentation) • [Issues](https://github.com/kaihere14/Budgenix/issues) • [Pull Requests](https://github.com/kaihere14/Budgenix/pulls)
-
----
-
-## Overview  
-
-Budgenix is an open‑source personal finance manager that helps users track income, expenses, and budgets in real time. Built with a **React + Vite** front‑end and a **Node.js/Express + TypeScript** back‑end, it offers a clean UI, RESTful API, and optional Docker deployment.
-
-* **Why Budgenix?**  
-  * Zero‑cost, self‑hosted alternative to SaaS budgeting tools.  
-  * Real‑time charts and insights powered by Chart.js.  
-  * Extensible architecture – add new data sources or analytics with minimal friction.
-
-*Target audience*: developers who want a ready‑made budgeting starter‑kit, hobbyists looking for a self‑hosted finance tracker, and anyone interested in learning a modern full‑stack TypeScript stack.
-
-Current version: **v1.3.0** (2025‑12‑15)
+[![Node.js](https://img.shields.io/badge/Node.js-20.x-brightgreen?logo=node.js)](https://nodejs.org/)  
+[![React](https://img.shields.io/badge/React-18.2.0-blue?logo=react)](https://reactjs.org/)  
+[![Vite](https://img.shields.io/badge/Vite-5.0.0-yellow?logo=vite)](https://vitejs.dev/)  
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.3.3-blue?logo=typescript)](https://www.typescriptlang.org/)  
+[![Express](https://img.shields.io/badge/Express-4.19.2-lightgrey?logo=express)](https://expressjs.com/)  
+[![MongoDB](https://img.shields.io/badge/MongoDB-7.0.0-green?logo=mongodb)](https://www.mongodb.com/)  
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  
+[![GitHub last commit](https://img.shields.io/github/last-commit/kaihere14/Budgenix)](https://github.com/kaihere14/Budgenix/commits/main)
 
 ---
 
-## Features  
+## Overview
+
+Budgenix is a **single‑page web app** that helps users track income, expenses, and savings goals in real time. Built with a **React + Vite** front‑end and a **Node/Express + TypeScript** back‑end, it stores data in **MongoDB** and provides a clean, responsive UI for budgeting on desktop and mobile.
+
+- **Why Budgenix?**  
+  - No ads, no hidden fees – completely open source.  
+  - Real‑time charts powered by Chart.js.  
+  - Secure JWT authentication and role‑based access.  
+
+Target audience: individuals, freelancers, and small teams who need a lightweight, self‑hosted budgeting tool.
+
+Current stable version: **v1.0.0** (released 2024‑11‑03).
+
+---
+
+## Features
 
 | Feature | Description | Status |
 |---------|-------------|--------|
-| **User authentication** | JWT‑based sign‑up / login with password hashing (bcrypt). | Stable |
-| **Multi‑currency support** | Store amounts in any ISO‑4217 currency; automatic conversion via ExchangeRate‑API. | Stable |
-| **Budget creation & tracking** | Define monthly budgets per category; visual progress bars. | Stable |
-| **Transaction management** | CRUD for income & expense entries, bulk import (CSV). | Stable |
-| **Recurring transactions** | Define repeatable income/expense entries (daily, weekly, monthly). | New / Stable |
-| **Dynamic dashboards** | Interactive charts (spending over time, category breakdown). | Stable |
-| **Responsive UI** | Mobile‑first design, works on all modern browsers. | Stable |
-| **RESTful API** | Full OpenAPI‑compatible spec, ready for third‑party integrations. | Stable |
-| **Docker support** | One‑command containerised deployment. | Beta |
-| **Webhooks** | Optional webhook notifications for budget overruns. | Experimental |
+| **User Authentication** | Register / login with email & password, JWT‑based sessions. | ✅ Stable |
+| **Dashboard** | Overview of total income, expenses, net balance, and recent activity. | ✅ Stable |
+| **Expense / Income CRUD** | Create, read, update, delete transactions with categories & tags. | ✅ Stable |
+| **Budget Categories** | Custom categories (Food, Transport, etc.) with optional limits. | ✅ Stable |
+| **Savings Goals** | Set target amounts and track progress over time. | ✅ Stable |
+| **Responsive UI** | Mobile‑first layout, works on all modern browsers. | ✅ Stable |
+| **Data Export** | Export transactions as CSV for external analysis. | 🟡 Beta |
+| **Multi‑currency Support** | Store amounts in different currencies (future work). | 🟠 Experimental |
+| **Dark Mode** | Toggle between light and dark themes. | ✅ Stable |
 
 ---
 
-## Tech Stack  
+## Tech Stack
 
 | Layer | Technology | Reason |
 |-------|------------|--------|
-| **Front‑end** | React 18, Vite, TailwindCSS, Chart.js, Axios | Fast HMR, utility‑first styling, lightweight bundle |
-| **Back‑end** | Node.js 20, Express, TypeScript, Prisma ORM | Type‑safe server, easy DB migrations |
-| **Database** | PostgreSQL 15 (default) | Relational, ACID‑compliant, scalable |
-| **Auth** | JWT, bcrypt | Stateless, widely supported |
-| **Containerisation** | Docker, Docker‑Compose | Reproducible environments |
-| **Testing** | Vitest (client), Jest + Supertest (server) | Unit & integration coverage |
-| **CI/CD** | GitHub Actions | Automated lint, test, build pipelines |
-| **Other** | dotenv, cors, helmet, morgan | Environment handling & security |
+| **Front‑end** | React 18, Vite, JSX, TailwindCSS (optional) | Fast HMR, modern React features |
+| **State Management** | React Context + custom hooks | Simple, no extra boilerplate |
+| **Charts** | Chart.js (via `react-chartjs-2`) | Interactive visualisations |
+| **Back‑end** | Node.js 20, Express, TypeScript | Type safety, scalable routing |
+| **Database** | MongoDB (via Mongoose) | Flexible document model for transactions |
+| **Authentication** | JSON Web Tokens (JWT) + bcrypt | Secure password storage |
+| **Testing** | Jest + React Testing Library (client) <br> Jest + Supertest (server) | Unit & integration coverage |
+| **Containerisation** | Docker (multi‑stage) | One‑click dev/prod environments |
+| **CI/CD** | GitHub Actions (build, lint, test) | Automated quality gates |
 
 ---
 
-## Architecture  
+## Architecture
 
 ```
 root
-├─ client/                # React + Vite SPA
+├─ client/                # React front‑end (Vite)
 │   ├─ src/
-│   │   ├─ components/    # UI components (Chart, Form, Card, …)
-│   │   ├─ pages/         # Route‑level pages (Dashboard, Budgets, Settings)
-│   │   ├─ context/       # React Context providers (Auth, Budget)
-│   │   ├─ hooks/         # Custom hooks (useFetch, useAuth)
-│   │   └─ assets/
+│   │   ├─ components/    # UI components (Header, Card, Chart, etc.)
+│   │   ├─ pages/         # Route‑level pages (Dashboard, Login, Settings)
+│   │   ├─ context/       # Global state (AuthContext, BudgetContext)
+│   │   ├─ hooks/         # Reusable custom hooks (useFetch, useForm)
+│   │   └─ assets/        # Images, icons
 │   └─ vite.config.js
-│
-├─ server/                # Express API (TypeScript)
-│   ├─ src/
-│   │   ├─ controllers/   # Request handlers (auth.controller.ts, budget.controller.ts, transaction.controller.ts)
-│   │   ├─ routes/        # Express routers (auth.routes.ts, budget.routes.ts, transaction.routes.ts, recurring.routes.ts)
-│   │   ├─ models/        # Prisma schema + TypeScript types
-│   │   ├─ middleware/    # Auth guard, error handler, request logger, rate limiter
-│   │   ├─ databases/     # Prisma client init
-│   │   └─ types/         # Shared TypeScript interfaces
-│   └─ index.ts           # Server bootstrap
-│
-├─ docker-compose.yml     # Multi‑service orchestration
-└─ .env.example           # Environment variable template
+└─ server/                # Express API (TypeScript)
+    ├─ src/
+    │   ├─ controllers/   # Request handlers (auth.controller.ts, transaction.controller.ts)
+    │   ├─ models/        # Mongoose schemas (User, Transaction, Category, Goal)
+    │   ├─ routes/        # Express routers (auth.routes.ts, transaction.routes.ts)
+    │   ├─ middleware/    # Auth, error handling, validation
+    │   ├─ databases/     # MongoDB connection logic
+    │   └─ types/         # Shared TypeScript interfaces
+    └─ index.ts           # Server entry point
 ```
 
-* **Client ↔ Server** – communication via Axios; base URL taken from `VITE_API_URL` environment variable.  
-* **Server** – all routes are versioned under `/api/v1`.  
-* **Database** – Prisma migrations live in `server/prisma/migrations`.  
+*Data Flow*:  
+1. **Client** sends HTTP requests (Axios) to `/api/*` endpoints.  
+2. **Server** validates JWT, processes request via controller, interacts with MongoDB, returns JSON.  
+3. **Client** updates React state, re‑renders UI.
 
 ---
 
-## Getting Started  
+## Getting Started
 
-### Prerequisites  
+### Prerequisites
 
 | Tool | Minimum version |
 |------|-----------------|
 | Node.js | 20.x |
-| pnpm (recommended) | 8.x |
-| Docker & Docker‑Compose (optional) | 24.x |
-| PostgreSQL (if not using Docker) | 15.x |
-| Git | any |
+| npm or pnpm | 9.x |
+| Docker (optional) | 24.x |
+| MongoDB | 7.x (local or Atlas) |
+| Git | 2.40+ |
 
-> **Note**: The project uses **pnpm** for deterministic lockfiles, but `npm` or `yarn` work as well.
+### Installation (Local Development)
 
-### Installation  
-
-#### 1. Clone the repository  
-
-```bash
-git clone https://github.com/kaihere14/Budgenix.git
-cd Budgenix
-```
-
-#### 2. Set up environment variables  
-
-```bash
-# copy the template and edit as needed
-cp .env.example .env
-# open .env in your editor and fill in the values
-```
-
-**Server side (`.env`)**
-
-```dotenv
-PORT=4000
-DATABASE_URL=postgresql://budgenix_user:password@localhost:5432/budgenix_db
-JWT_SECRET=super_secret_key
-EXCHANGE_API_KEY=your_exchangerate_api_key
-```
-
-**Client side (`.env` – Vite loads variables prefixed with `VITE_`)**
-
-```dotenv
-VITE_API_URL=http://localhost:4000/api/v1
-```
-
-#### 3. Install dependencies  
-
-```bash
-# Server
-cd server
-pnpm install
-
-# Client
-cd ../client
-pnpm install
-```
-
-#### 4. Run the database (Docker‑compose) – *optional*  
-
-```bash
-docker compose up -d postgres
-# wait a few seconds for PostgreSQL to become ready
-```
-
-#### 5. Apply Prisma migrations  
-
-```bash
-cd ../server
-pnpm prisma migrate deploy   # creates tables if they don't exist
-```
-
-#### 6. Start the applications  
-
-```bash
-# In one terminal – API server
-cd server
-pnpm dev                    # runs `ts-node-dev src/index.ts`
-
-# In another terminal – Front‑end
-cd ../client
-pnpm dev                    # runs `vite`
-```
-
-The client will be available at **http://localhost:5173** and the API at **http://localhost:4000/api/v1**.
-
-### Verification  
-
-Open the browser at the client URL. You should see the Budgenix landing page and be able to register a new user.
-
----
-
-## Usage  
-
-### Register & Login (via UI)  
-
-1. Click **Sign Up**, fill in email & password.  
-2. After registration, you are automatically logged in and redirected to the Dashboard.
-
-### Dashboard  
-
-- **Spending Overview** – line chart of expenses over the last 30 days.  
-- **Budget Progress** – circular progress bars per category.  
-
-### API Quick Reference  
-
-All endpoints are prefixed with `/api/v1`. Authentication is required for every route except `/auth/*`. Include the JWT token in the `Authorization` header:
-
-```http
-Authorization: Bearer <your_jwt_token>
-```
-
-#### Auth  
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `POST` | `/auth/register` | Register a new user. Body: `{ email, password }` |
-| `POST` | `/auth/login`    | Login and receive JWT. Body: `{ email, password }` |
-| `GET`  | `/auth/me`       | Get current user profile (requires JWT). |
-
-**Example – Register**
-
-```bash
-curl -X POST http://localhost:4000/api/v1/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"email":"alice@example.com","password":"StrongP@ssw0rd"}'
-```
-
-#### Budgets  
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET`  | `/budgets` | List all budgets for the authenticated user. |
-| `POST` | `/budgets` | Create a new budget. Body: `{ name, limit, currency, month }` |
-| `GET`  | `/budgets/:id` | Retrieve a single budget. |
-| `PUT`  | `/budgets/:id` | Update budget fields. |
-| `DELETE`| `/budgets/:id`| Delete a budget. |
-
-**Example – Create a Budget**
-
-```bash
-curl -X POST http://localhost:4000/api/v1/budgets \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-        "name": "Groceries",
-        "limit": 300,
-        "currency": "USD",
-        "month": "2025-01"
-      }'
-```
-
-#### Transactions  
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET`  | `/transactions` | List transactions (filterable by date, category). |
-| `POST` | `/transactions` | Add a new transaction. Body: `{ amount, currency, date, category, description }` |
-| `PUT`  | `/transactions/:id` | Update a transaction. |
-| `DELETE`| `/transactions/:id`| Delete a transaction. |
-
-**Example – Add a Transaction**
-
-```bash
-curl -X POST http://localhost:4000/api/v1/transactions \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-        "amount": 45.99,
-        "currency": "USD",
-        "date": "2025-01-15",
-        "category": "Groceries",
-        "description": "Weekly supermarket"
-      }'
-```
-
-#### Recurring Transactions  
-
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET`  | `/recurring` | List all recurring entries for the user. |
-| `POST` | `/recurring` | Create a recurring transaction. Body: `{ amount, currency, startDate, frequency, category, description }` |
-| `PUT`  | `/recurring/:id` | Update a recurring entry. |
-| `DELETE`| `/recurring/:id`| Remove a recurring entry. |
-
-**Example – Create a Monthly Subscription**
-
-```bash
-curl -X POST http://localhost:4000/api/v1/recurring \
-  -H "Authorization: Bearer $TOKEN" \
-  -H "Content-Type: application/json" \
-  -d '{
-        "amount": 9.99,
-        "currency": "USD",
-        "startDate": "2025-01-01",
-        "frequency": "monthly",
-        "category": "Entertainment",
-        "description": "Streaming service"
-      }'
-```
-
-Full OpenAPI spec is available at `http://localhost:4000/api/v1/docs` when the server is running.
-
----
-
-## Development  
-
-### Setting up a local dev environment  
-
-```bash
-# Server
-cd server
-pnpm install
-pnpm prisma generate   # generate Prisma client types
-pnpm dev               # starts ts-node-dev with hot reload
-
-# Client
-cd ../client
-pnpm install
-pnpm dev               # Vite dev server with HMR
-```
-
-### Running tests  
-
-```bash
-# Server tests (Jest + Supertest)
-cd server
-pnpm test
-
-# Client tests (Vitest)
-cd ../client
-pnpm test
-```
-
-### Code style  
-
-- **ESLint** (client) – configured with `eslint.config.js`.  
-- **Prettier** – enforced via `pnpm format`.  
-- **TypeScript** – strict mode (`"strict": true` in `tsconfig.json`).  
-
-### Debugging  
-
-- Server: use `pnpm dev:debug` to launch with `--inspect`.  
-- Client: open Chrome DevTools; Vite provides source‑map support out of the box.
-
----
-
-## Deployment  
-
-### Docker (recommended)  
-
-```bash
-# Build and start all services (PostgreSQL, API, client)
-docker compose up --build -d
-```
-
-The client will be served by Nginx on port **80**, the API on **4000** (internal).  
-
-### Production (manual)  
-
-1. **Build client**  
+1. **Clone the repository**
 
    ```bash
+   git clone https://github.com/kaihere14/Budgenix.git
+   cd Budgenix
+   ```
+
+2. **Set up environment variables**
+
+   Create a `.env` file in the **server** folder:
+
+   ```dotenv
+   # server/.env
+   PORT=5000
+   MONGO_URI=mongodb://localhost:27017/budgenix
+   JWT_SECRET=yourSuperSecretKey
+   JWT_EXPIRES_IN=7d
+   ```
+
+   Create a `.env` file in the **client** folder (optional, only needed for custom API URLs):
+
+   ```dotenv
+   # client/.env
+   VITE_API_URL=http://localhost:5000/api
+   ```
+
+3. **Install dependencies**
+
+   ```bash
+   # Server dependencies
+   cd server
+   pnpm install   # or npm install
+
+   # Client dependencies
+   cd ../client
+   pnpm install   # or npm install
+   ```
+
+4. **Run the development servers**
+
+   ```bash
+   # In one terminal – back‑end
+   cd server
+   pnpm dev   # runs ts-node-dev (npm script defined in server/package.json)
+
+   # In another terminal – front‑end
    cd client
-   pnpm build   # outputs to ./dist
+   pnpm dev   # runs Vite dev server
    ```
 
-2. **Run server**  
+   The client will be available at `http://localhost:5173` and proxies API calls to `http://localhost:5000`.
 
-   ```bash
-   cd ../server
-   pnpm install --prod
-   NODE_ENV=production pnpm start   # uses compiled JS from ./dist
-   ```
+5. **Verify the setup**
 
-3. **Serve static files** – configure your favourite reverse proxy (NGINX, Caddy) to serve `client/dist` and proxy `/api` to the Node server.
+   - Open the browser → `http://localhost:5173`.
+   - Register a new account, log in, and you should see the dashboard.
 
-### Environment variables for production  
+### Docker (Production‑ready)
 
-| Variable | Description |
-|----------|-------------|
-| `PORT` | Port on which the API listens (default 4000). |
-| `DATABASE_URL` | PostgreSQL connection string. |
-| `JWT_SECRET` | Strong secret for signing JWTs. |
-| `EXCHANGE_API_KEY` | API key for currency conversion service. |
-| `VITE_API_URL` | Base URL for the client to reach the API (e.g., `https://api.budgenix.com/api/v1`). |
+A multi‑stage Dockerfile is provided for both client and server.
+
+```bash
+# Build and run everything with Docker Compose (if you add a compose file)
+docker compose up --build
+```
+
+The app will be reachable at `http://localhost:80`.
 
 ---
 
-## API Documentation  
+## Usage
 
-The API follows **OpenAPI 3.1**. After starting the server, visit:
+### Authentication
+
+```bash
+# Register
+POST /api/auth/register
+{
+  "email": "john@example.com",
+  "password": "StrongP@ssw0rd"
+}
+
+# Login
+POST /api/auth/login
+{
+  "email": "john@example.com",
+  "password": "StrongP@ssw0rd"
+}
+# Response contains JWT token
+```
+
+All subsequent requests must include the token:
 
 ```
-http://localhost:4000/api/v1/docs
+Authorization: Bearer <jwt-token>
 ```
 
-You’ll find an interactive Swagger UI with:
+### Transaction CRUD (example with Axios)
 
-* **Authentication** – Bearer JWT.  
-* **Rate limits** – 100 requests per minute per IP (configurable in `middleware/rateLimiter.ts`).  
-* **Error format**  
+```javascript
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+  headers: {
+    Authorization: `Bearer ${localStorage.getItem('token')}`
+  }
+});
+
+// Create a new expense
+await api.post('/transactions', {
+  type: 'expense',
+  amount: 45.99,
+  category: 'Food',
+  date: '2024-12-01',
+  note: 'Dinner at sushi place'
+});
+
+// Get all transactions
+const { data } = await api.get('/transactions');
+console.log(data);
+```
+
+### Dashboard
+
+The dashboard page (`/dashboard`) displays:
+
+- **Net Balance** (income – expenses)
+- **Monthly Spend Chart** (Chart.js line chart)
+- **Recent Transactions** (table with edit/delete actions)
+- **Savings Goal Progress** (circular progress bar)
+
+### Export CSV
+
+```bash
+GET /api/transactions/export
+# Returns a CSV file with all user transactions
+```
+
+---
+
+## API Documentation
+
+| Method | Endpoint | Description | Auth |
+|--------|----------|-------------|------|
+| `POST` | `/api/auth/register` | Create a new user account | ❌ |
+| `POST` | `/api/auth/login` | Authenticate and receive JWT | ❌ |
+| `GET`  | `/api/users/me` | Get current user profile | ✅ |
+| `GET`  | `/api/transactions` | List all user transactions (filterable) | ✅ |
+| `POST` | `/api/transactions` | Add a new transaction | ✅ |
+| `PUT`  | `/api/transactions/:id` | Update a transaction | ✅ |
+| `DELETE`| `/api/transactions/:id` | Delete a transaction | ✅ |
+| `GET`  | `/api/categories` | Retrieve all budget categories | ✅ |
+| `POST` | `/api/categories` | Create a new category | ✅ |
+| `GET`  | `/api/goals` | List savings goals | ✅ |
+| `POST` | `/api/goals` | Create a new goal | ✅ |
+| `GET`  | `/api/transactions/export` | Export transactions as CSV | ✅ |
+
+### Request / Response Example – Create Transaction
+
+**Request**
 
 ```json
+POST /api/transactions
 {
-  "status": 400,
-  "error": "ValidationError",
-  "message": "Field 'amount' must be a positive number."
+  "type": "income",
+  "amount": 1200,
+  "category": "Salary",
+  "date": "2024-12-01",
+  "note": "December salary"
 }
 ```
 
+**Response**
+
+```json
+{
+  "success": true,
+  "transaction": {
+    "_id": "66a1f2c4e5b9c9d4f7a1b2c3",
+    "type": "income",
+    "amount": 1200,
+    "category": "Salary",
+    "date": "2024-12-01T00:00:00.000Z",
+    "note": "December salary",
+    "user": "66a1e9b1e5b9c9d4f7a1a9b8",
+    "createdAt": "2024-07-30T12:34:56.789Z",
+    "updatedAt": "2024-07-30T12:34:56.789Z"
+  }
+}
+```
+
+### Error Handling
+
+All error responses follow the same shape:
+
+```json
+{
+  "success": false,
+  "error": {
+    "code": "VALIDATION_ERROR",
+    "message": "Amount must be a positive number."
+  }
+}
+```
+
+Common error codes:
+
+- `AUTHENTICATION_ERROR` – missing/invalid JWT.
+- `VALIDATION_ERROR` – request body fails schema validation.
+- `NOT_FOUND` – resource does not exist.
+- `SERVER_ERROR` – unexpected server failure.
+
 ---
 
-## Contributing  
+## Development
 
-We welcome contributions! Please follow these steps:
+### Running Tests
 
-1. **Fork** the repository and **clone** your fork.  
-2. Create a feature branch: `git checkout -b feat/awesome-feature`.  
-3. Install dependencies (see *Getting Started*).  
-4. Write tests for any new functionality.  
-5. Ensure lint & format pass: `pnpm lint && pnpm format`.  
-6. Commit with a clear message and push to your fork.  
-7. Open a **Pull Request** against `main`.  
+```bash
+# Server tests
+cd server
+pnpm test   # runs jest with ts-jest
 
-### Development workflow  
+# Client tests
+cd ../client
+pnpm test   # runs jest + @testing-library/react
+```
 
-| Branch | Purpose |
-|--------|---------|
-| `main` | Stable releases (tagged). |
-| `dev`  | Integration branch – PRs are merged here first. |
-| `feature/*` | Individual feature work. |
-| `hotfix/*` | Emergency patches to `main`. |
+### Linting & Formatting
 
-### Code review guidelines  
+```bash
+# Server
+pnpm lint   # ESLint (typescript-eslint)
 
-* All PRs must pass CI (lint, tests, type‑check).  
-* Keep changes atomic – one logical change per PR.  
-* Update documentation (README, Swagger, inline comments) when adding public APIs.  
+# Client
+pnpm lint   # ESLint (React)
+pnpm format # Prettier
+```
+
+### Debugging
+
+- **Server**: `pnpm dev` runs `ts-node-dev` with source‑maps. Use VS Code launch config `"type": "node"` and attach to port `9229`.
+- **Client**: Vite dev server provides hot‑module replacement. Open Chrome DevTools → React DevTools for component inspection.
+
+### Contributing a New Feature
+
+1. Fork the repo and create a feature branch (`git checkout -b feat/your-feature`).
+2. Follow the existing folder conventions (`client/src/...`, `server/src/...`).
+3. Add unit/integration tests.
+4. Run `pnpm lint && pnpm test` locally.
+5. Submit a PR with a clear description and screenshots (if UI changes).
 
 ---
 
-## Troubleshooting  
+## Deployment
 
-| Issue | Solution |
-|-------|----------|
-| **Cannot connect to PostgreSQL** | Verify `DATABASE_URL` is correct, container is running (`docker ps`), and port `5432` is open. |
-| **JWT verification fails** | Ensure the same `JWT_SECRET` is used in both client `.env` (if you proxy) and server `.env`. |
-| **Vite dev server shows “Failed to load source map”** | Run `pnpm clean && pnpm dev` to clear caches. |
-| **CORS errors** | The server uses `cors` middleware; make sure `origin` in `.env` matches the client URL. |
-| **Docker compose hangs** | Remove stale volumes: `docker compose down -v` then `docker compose up -d`. |
-| **Recurring transaction not triggering** | Check the `frequency
+### Production Build (Docker)
+
+```dockerfile
+# server/Dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY server/package*.json ./
+RUN npm ci
+COPY server/ .
+RUN npm run build   # compiles TypeScript
+
+FROM node:20-alpine AS runtime
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY server/package*.json ./
+RUN npm ci --production
+EXPOSE 5000
+CMD ["node", "dist/index.js"]
+```
+
+```dockerfile
+# client/Dockerfile
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY client/package*.json ./
+RUN npm ci
+COPY client/ .
+RUN npm run build   # Vite production build
+
+FROM nginx:stable-alpine
+COPY --from=builder /app/dist /usr/share/nginx/html
+EXPOSE 80
+```
+
+Deploy the two containers behind a reverse proxy (NGINX, Traefik, or your cloud provider). Ensure the `VITE_API_URL` environment variable points to the back‑end URL.
+
+### Vercel (Front‑end)
+
+The `client/vercel.json` is already configured for static deployment. Connect the repository to Vercel, set the environment variable `VITE_API_URL`, and Vercel will handle builds automatically.
+
+### Heroku / Render (Back‑end)
+
+```bash
+heroku create budgenix-api
+git push heroku main:master
+heroku config:set MONGO_URI=<your-mongo-uri> JWT_SECRET=<secret>
+```
+
+---
+
+## Contributing
+
+We welcome contributions! Please read our **[CONTRIBUTING.md](CONTRIBUTING.md)** for details on our code of conduct, the pull‑request process, and how to report bugs.
+
+1. **Fork** the repository.
+2. **Create a branch** (`git checkout -b feat/awesome-feature`).
+3. **Commit** your changes with clear messages.
+4. **Push** to your fork (`git push origin feat/awesome-feature`).
+5. **Open a Pull Request** against `main`.
+
+All contributions are required to pass the CI pipeline (lint + tests) before merging.
+
+---
+
+## License & Credits
+
+**License:** MIT – see the [LICENSE](LICENSE) file for details.
+
+**Authors & Maintainers**
+
+- **Kai Here** – Project creator & lead developer – [@kaihere14](https://github.com/kaihere14)
+
+**Acknowledgments**
+
+- UI inspiration from **Material‑UI** (MIT licensed).  
+- Charting powered by **Chart.js**.  
+- Authentication patterns based on **Auth0** tutorials.  
+
+---
+
+*Happy budgeting! 🎉*
