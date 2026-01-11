@@ -4,6 +4,7 @@
 
 **Budgenix** (aka *FinBuddy*) is a full‑stack personal finance assistant that lets users track expenses, manage budgets, and get AI‑powered insights in real‑time. The web client is built with React + Vite, TailwindCSS and daisyUI, while the backend is a TypeScript‑powered Express API backed by MongoDB. Integrated AI services (Google Gemini & Agora) provide smart expense categorisation, budgeting recommendations, and conversational assistance.
 
+
 ---
 
 ## Table of Contents  
