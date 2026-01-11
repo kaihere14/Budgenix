@@ -11,13 +11,14 @@
 [![Express](https://img.shields.io/badge/Express-4.19.2-lightgrey?logo=express)](https://expressjs.com/)  
 [![MongoDB](https://img.shields.io/badge/MongoDB-7.0.0-green?logo=mongodb)](https://www.mongodb.com/)  
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)  
+[![Version](https://img.shields.io/badge/version-1.0.1-blue?logo=semantic-release)](https://github.com/kaihere14/Budgenix/releases/tag/v1.0.1)  
 [![GitHub last commit](https://img.shields.io/github/last-commit/kaihere14/Budgenix)](https://github.com/kaihere14/Budgenix/commits/main)
 
 ---
 
 ## Overview
 
-Budgenix is a **single‑page web app** that helps users track income, expenses, and savings goals in real time. Built with a **React + Vite** front‑end and a **Node/Express + TypeScript** back‑end, it stores data in **MongoDB** and provides a clean, responsive UI for budgeting on desktop and mobile.
+Budgenix is a **single‑page web app** that helps users track income, expenses, savings goals, and recurring transactions in real time. Built with a **React + Vite** front‑end and a **Node/Express + TypeScript** back‑end, it stores data in **MongoDB** and provides a clean, responsive UI for budgeting on desktop and mobile.
 
 - **Why Budgenix?**  
   - No ads, no hidden fees – completely open source.  
@@ -26,7 +27,7 @@ Budgenix is a **single‑page web app** that helps users track income, expenses,
 
 Target audience: individuals, freelancers, and small teams who need a lightweight, self‑hosted budgeting tool.
 
-Current stable version: **v1.0.0** (released 2024‑11‑03).
+Current stable version: **v1.0.1** (released 2024‑12‑01).
 
 ---
 
@@ -39,6 +40,7 @@ Current stable version: **v1.0.0** (released 2024‑11‑03).
 | **Expense / Income CRUD** | Create, read, update, delete transactions with categories & tags. | ✅ Stable |
 | **Budget Categories** | Custom categories (Food, Transport, etc.) with optional limits. | ✅ Stable |
 | **Savings Goals** | Set target amounts and track progress over time. | ✅ Stable |
+| **Recurring Transactions** | Define transactions that repeat on a schedule (daily, weekly, monthly). | ✅ Stable |
 | **Responsive UI** | Mobile‑first layout, works on all modern browsers. | ✅ Stable |
 | **Data Export** | Export transactions as CSV for external analysis. | 🟡 Beta |
 | **Multi‑currency Support** | Store amounts in different currencies (future work). | 🟠 Experimental |
@@ -77,7 +79,7 @@ root
 └─ server/                # Express API (TypeScript)
     ├─ src/
     │   ├─ controllers/   # Request handlers (auth.controller.ts, transaction.controller.ts)
-    │   ├─ models/        # Mongoose schemas (User, Transaction, Category, Goal)
+    │   ├─ models/        # Mongoose schemas (User, Transaction, Category, Goal, Recurrence)
     │   ├─ routes/        # Express routers (auth.routes.ts, transaction.routes.ts)
     │   ├─ middleware/    # Auth, error handling, validation
     │   ├─ databases/     # MongoDB connection logic
@@ -86,6 +88,7 @@ root
 ```
 
 *Data Flow*:  
+
 1. **Client** sends HTTP requests (Axios) to `/api/*` endpoints.  
 2. **Server** validates JWT, processes request via controller, interacts with MongoDB, returns JSON.  
 3. **Client** updates React state, re‑renders UI.
@@ -229,6 +232,23 @@ const { data } = await api.get('/transactions');
 console.log(data);
 ```
 
+### Recurring Transactions
+
+```bash
+# Create a recurring transaction (monthly)
+POST /api/recurrences
+{
+  "type": "expense",
+  "amount": 120,
+  "category": "Gym",
+  "frequency": "monthly",
+  "startDate": "2024-12-01",
+  "note": "Gym membership"
+}
+```
+
+The server will automatically generate a concrete transaction each period.
+
 ### Dashboard
 
 The dashboard page (`/dashboard`) displays:
@@ -237,6 +257,7 @@ The dashboard page (`/dashboard`) displays:
 - **Monthly Spend Chart** (Chart.js line chart)
 - **Recent Transactions** (table with edit/delete actions)
 - **Savings Goal Progress** (circular progress bar)
+- **Upcoming Recurrences** (list of scheduled transactions)
 
 ### Export CSV
 
@@ -262,6 +283,8 @@ GET /api/transactions/export
 | `POST` | `/api/categories` | Create a new category | ✅ |
 | `GET`  | `/api/goals` | List savings goals | ✅ |
 | `POST` | `/api/goals` | Create a new goal | ✅ |
+| `GET`  | `/api/recurrences` | List recurring transactions | ✅ |
+| `POST` | `/api/recurrences` | Create a new recurrence | ✅ |
 | `GET`  | `/api/transactions/export` | Export transactions as CSV | ✅ |
 
 ### Request / Response Example – Create Transaction
@@ -314,9 +337,9 @@ All error responses follow the same shape:
 
 Common error codes:
 
-- `AUTHENTICATION_ERROR` – missing/invalid JWT.
-- `VALIDATION_ERROR` – request body fails schema validation.
-- `NOT_FOUND` – resource does not exist.
+- `AUTHENTICATION_ERROR` – missing/invalid JWT.  
+- `VALIDATION_ERROR` – request body fails schema validation.  
+- `NOT_FOUND` – resource does not exist.  
 - `SERVER_ERROR` – unexpected server failure.
 
 ---
@@ -348,15 +371,15 @@ pnpm format # Prettier
 
 ### Debugging
 
-- **Server**: `pnpm dev` runs `ts-node-dev` with source‑maps. Use VS Code launch config `"type": "node"` and attach to port `9229`.
+- **Server**: `pnpm dev` runs `ts-node-dev` with source‑maps. Use VS Code launch config `"type": "node"` and attach to port `9229`.  
 - **Client**: Vite dev server provides hot‑module replacement. Open Chrome DevTools → React DevTools for component inspection.
 
 ### Contributing a New Feature
 
-1. Fork the repo and create a feature branch (`git checkout -b feat/your-feature`).
-2. Follow the existing folder conventions (`client/src/...`, `server/src/...`).
-3. Add unit/integration tests.
-4. Run `pnpm lint && pnpm test` locally.
+1. Fork the repo and create a feature branch (`git checkout -b feat/your-feature`).  
+2. Follow the existing folder conventions (`client/src/...`, `server/src/...`).  
+3. Add unit/integration tests.  
+4. Run `pnpm lint && pnpm test` locally.  
 5. Submit a PR with a clear description and screenshots (if UI changes).
 
 ---
@@ -417,30 +440,8 @@ heroku config:set MONGO_URI=<your-mongo-uri> JWT_SECRET=<secret>
 
 We welcome contributions! Please read our **[CONTRIBUTING.md](CONTRIBUTING.md)** for details on our code of conduct, the pull‑request process, and how to report bugs.
 
-1. **Fork** the repository.
-2. **Create a branch** (`git checkout -b feat/awesome-feature`).
-3. **Commit** your changes with clear messages.
-4. **Push** to your fork (`git push origin feat/awesome-feature`).
-5. **Open a Pull Request** against `main`.
-
-All contributions are required to pass the CI pipeline (lint + tests) before merging.
-
----
-
-## License & Credits
-
-**License:** MIT – see the [LICENSE](LICENSE) file for details.
-
-**Authors & Maintainers**
-
-- **Kai Here** – Project creator & lead developer – [@kaihere14](https://github.com/kaihere14)
-
-**Acknowledgments**
-
-- UI inspiration from **Material‑UI** (MIT licensed).  
-- Charting powered by **Chart.js**.  
-- Authentication patterns based on **Auth0** tutorials.  
-
----
-
-*Happy budgeting! 🎉*
+1. **Fork** the repository.  
+2. **Create a branch** (`git checkout -b feat/awesome-feature`).  
+3. **Commit** your changes with clear messages.  
+4. **Push** to your fork (`git push origin feat/awesome-feature`).  
+5. **Open a Pull Request** against
