@@ -5,7 +5,6 @@
 
 ---
 
-
 ## Badges  
 
 | Build | Coverage | Version | License |
@@ -18,7 +17,7 @@
 
 ## Overview  
 
-Budgenix is an open‑source personal finance manager that helps users track income, expenses, and budgets in real time. Built with a **React + Vite** front‑end and a **Node.js/Express + TypeScript** back‑end, it offers a clean UI, RESTful API, and optional Docker deployment.
+Budgenix is an open‑source personal finance manager that helps users track income, expenses, and budgets in real time. Built with a **React + Vite** front‑end and a **Node.js/Express + TypeScript** back‑end, it offers a clean UI, RESTful API, and optional Docker deployment.
 
 * **Why Budgenix?**  
   * Zero‑cost, self‑hosted alternative to SaaS budgeting tools.  
@@ -27,7 +26,7 @@ Budgenix is an open‑source personal finance manager that helps users track inc
 
 *Target audience*: developers who want a ready‑made budgeting starter‑kit, hobbyists looking for a self‑hosted finance tracker, and anyone interested in learning a modern full‑stack TypeScript stack.
 
-Current version: **v1.2.0** (2025‑12‑01)
+Current version: **v1.3.0** (2025‑12‑15)
 
 ---
 
@@ -39,6 +38,7 @@ Current version: **v1.2.0** (2025‑12‑01)
 | **Multi‑currency support** | Store amounts in any ISO‑4217 currency; automatic conversion via ExchangeRate‑API. | Stable |
 | **Budget creation & tracking** | Define monthly budgets per category; visual progress bars. | Stable |
 | **Transaction management** | CRUD for income & expense entries, bulk import (CSV). | Stable |
+| **Recurring transactions** | Define repeatable income/expense entries (daily, weekly, monthly). | New / Stable |
 | **Dynamic dashboards** | Interactive charts (spending over time, category breakdown). | Stable |
 | **Responsive UI** | Mobile‑first design, works on all modern browsers. | Stable |
 | **RESTful API** | Full OpenAPI‑compatible spec, ready for third‑party integrations. | Stable |
@@ -51,12 +51,12 @@ Current version: **v1.2.0** (2025‑12‑01)
 
 | Layer | Technology | Reason |
 |-------|------------|--------|
-| **Front‑end** | React 18, Vite, TailwindCSS, Chart.js, Axios | Fast HMR, utility‑first styling, lightweight bundle |
-| **Back‑end** | Node.js 20, Express, TypeScript, Prisma ORM | Type‑safe server, easy DB migrations |
-| **Database** | PostgreSQL 15 (default) | Relational, ACID‑compliant, scalable |
+| **Front‑end** | React 18, Vite, TailwindCSS, Chart.js, Axios | Fast HMR, utility‑first styling, lightweight bundle |
+| **Back‑end** | Node.js 20, Express, TypeScript, Prisma ORM | Type‑safe server, easy DB migrations |
+| **Database** | PostgreSQL 15 (default) | Relational, ACID‑compliant, scalable |
 | **Auth** | JWT, bcrypt | Stateless, widely supported |
 | **Containerisation** | Docker, Docker‑Compose | Reproducible environments |
-| **Testing** | Vitest (client), Jest + Supertest (server) | Unit & integration coverage |
+| **Testing** | Vitest (client), Jest + Supertest (server) | Unit & integration coverage |
 | **CI/CD** | GitHub Actions | Automated lint, test, build pipelines |
 | **Other** | dotenv, cors, helmet, morgan | Environment handling & security |
 
@@ -77,10 +77,10 @@ root
 │
 ├─ server/                # Express API (TypeScript)
 │   ├─ src/
-│   │   ├─ controllers/   # Request handlers (auth.controller.ts, budget.controller.ts)
-│   │   ├─ routes/        # Express routers (auth.routes.ts, budget.routes.ts)
+│   │   ├─ controllers/   # Request handlers (auth.controller.ts, budget.controller.ts, transaction.controller.ts)
+│   │   ├─ routes/        # Express routers (auth.routes.ts, budget.routes.ts, transaction.routes.ts, recurring.routes.ts)
 │   │   ├─ models/        # Prisma schema + TypeScript types
-│   │   ├─ middleware/    # Auth guard, error handler, request logger
+│   │   ├─ middleware/    # Auth guard, error handler, request logger, rate limiter
 │   │   ├─ databases/     # Prisma client init
 │   │   └─ types/         # Shared TypeScript interfaces
 │   └─ index.ts           # Server bootstrap
@@ -103,7 +103,7 @@ root
 |------|-----------------|
 | Node.js | 20.x |
 | pnpm (recommended) | 8.x |
-| Docker & Docker‑Compose (optional) | 24.x |
+| Docker & Docker‑Compose (optional) | 24.x |
 | PostgreSQL (if not using Docker) | 15.x |
 | Git | any |
 
@@ -126,20 +126,18 @@ cp .env.example .env
 # open .env in your editor and fill in the values
 ```
 
-Key variables (server side):
+**Server side (`.env`)**
 
 ```dotenv
-# .env (server)
 PORT=4000
 DATABASE_URL=postgresql://budgenix_user:password@localhost:5432/budgenix_db
 JWT_SECRET=super_secret_key
 EXCHANGE_API_KEY=your_exchangerate_api_key
 ```
 
-Key variables (client side – Vite automatically loads variables prefixed with `VITE_`):
+**Client side (`.env` – Vite loads variables prefixed with `VITE_`)**
 
 ```dotenv
-# .env (client)
 VITE_API_URL=http://localhost:4000/api/v1
 ```
 
@@ -185,8 +183,7 @@ The client will be available at **http://localhost:5173** and the API at **http:
 
 ### Verification  
 
-*Open the browser and navigate to the client URL.*  
-You should see the Budgenix landing page and be able to register a new user.
+Open the browser at the client URL. You should see the Budgenix landing page and be able to register a new user.
 
 ---
 
@@ -274,7 +271,32 @@ curl -X POST http://localhost:4000/api/v1/transactions \
       }'
 ```
 
-Full OpenAPI spec can be found at `http://localhost:4000/api/v1/docs` when the server is running.
+#### Recurring Transactions  
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| `GET`  | `/recurring` | List all recurring entries for the user. |
+| `POST` | `/recurring` | Create a recurring transaction. Body: `{ amount, currency, startDate, frequency, category, description }` |
+| `PUT`  | `/recurring/:id` | Update a recurring entry. |
+| `DELETE`| `/recurring/:id`| Remove a recurring entry. |
+
+**Example – Create a Monthly Subscription**
+
+```bash
+curl -X POST http://localhost:4000/api/v1/recurring \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{
+        "amount": 9.99,
+        "currency": "USD",
+        "startDate": "2025-01-01",
+        "frequency": "monthly",
+        "category": "Entertainment",
+        "description": "Streaming service"
+      }'
+```
+
+Full OpenAPI spec is available at `http://localhost:4000/api/v1/docs` when the server is running.
 
 ---
 
@@ -364,7 +386,7 @@ The client will be served by Nginx on port **80**, the API on **4000** (internal
 
 ## API Documentation  
 
-The API follows **OpenAPI 3.1**. After starting the server, visit:
+The API follows **OpenAPI 3.1**. After starting the server, visit:
 
 ```
 http://localhost:4000/api/v1/docs
@@ -424,49 +446,4 @@ We welcome contributions! Please follow these steps:
 | **Vite dev server shows “Failed to load source map”** | Run `pnpm clean && pnpm dev` to clear caches. |
 | **CORS errors** | The server uses `cors` middleware; make sure `origin` in `.env` matches the client URL. |
 | **Docker compose hangs** | Remove stale volumes: `docker compose down -v` then `docker compose up -d`. |
-
-For more help, open an issue or join the **#support** channel in the GitHub Discussions.
-
----
-
-## Roadmap  
-
-- **v2.0** – Real‑time sync via WebSockets, mobile native wrapper (React Native).  
-- **Multi‑user families** – Shared budgets with role‑based permissions.  
-- **AI insights** – Predictive spending suggestions using OpenAI API.  
-- **Export/Import** – OFX and QIF support.  
-
-Feel free to suggest features via GitHub Issues!
-
----
-
-## License & Credits  
-
-**License**: MIT © 2025 Kai Here  
-
-```
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions...
-```
-
-### Contributors  
-
-| Name | GitHub |
-|------|--------|
-| Kai Here | [kaihere14](https://github.com/kaihere14) |
-| (Add your name here) |  |
-
-### Acknowledgments  
-
-- **Prisma** – ORM & migration tooling.  
-- **Vite** – Lightning‑fast front‑end bundler.  
-- **Chart.js** – Beautiful charts with minimal config.  
-- **OpenAPI Generator** – Swagger UI integration.  
-
----  
-
-*Happy budgeting! 
+| **Recurring transaction not triggering** | Check the `frequency
