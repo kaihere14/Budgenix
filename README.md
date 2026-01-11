@@ -1,8 +1,8 @@
 # Budgenix (FinBuddy)  
 
-![Build Status](https://img.shields.io/github/actions/workflow/status/kaihere14/Budgenix/ci.yml?branch=main&label=CI) ![License](https://img.shields.io/github/license/kaihere14/Budgenix) ![Version](https://img.shields.io/github/package-json/v/kaihere14/Budgenix) ![Coverage](https://img.shields.io/codecov/c/github/kaihere14/Budgenix?label=coverage) ![Docker](https://img.shields.io/docker/pulls/kaihere14/budgenix-server?label=Docker%20Pulls)
+![Build Status](https://img.shields.io/github/actions/workflow/status/kaihere14/Budgenix/ci.yml?branch=main&label=CI) ![License](https://img.shields.io/github/license/kaihere14/Budgenix) ![Version](https://img.shields.io/github/package-json/v/kaihere14/Budgenix) ![Coverage](https://img.shields.io/codecov/c/github/kaihere14/Budgenix?label=coverage) ![Docker Pulls](https://img.shields.io/docker/pulls/kaihere14/budgenix-server?label=Docker%20Pulls)
 
-**Budgenix** (aka *FinBuddy*) is a full‑stack personal finance assistant that lets users track expenses, manage budgets, and get AI‑powered insights in real‑time. The web client is built with React + Vite, TailwindCSS and daisyUI, while the backend is a TypeScript‑powered Express API backed by MongoDB. Integrated AI services (Google Gemini & Agora) provide smart expense categorisation, budgeting recommendations, and conversational assistance.
+**Budgenix** (aka *FinBuddy*) is a full‑stack personal‑finance assistant that lets users track expenses, manage budgets, and get AI‑powered insights in real‑time. The web client is built with React + Vite, TailwindCSS and daisyUI, while the backend is a TypeScript‑powered Express API backed by MongoDB. Integrated AI services (Google Gemini & Agora) provide smart expense categorisation, budgeting recommendations, and conversational assistance.
 
 ---
 
@@ -347,4 +347,8 @@ docker run -d -p 3300:3300 --env-file .env budgenix-server
 | **MongoDB connection error** | Verify `MONGODB_URI` in `.env`. Ensure network access if using Atlas. |
 | **CORS blocked** | The server enables `cors()` for all origins in development. For production, configure allowed origins in `server/src/middleware/cors.ts` (if you add one). |
 | **JWT verification fails** | Check that `JWT_SECRET` matches between client and server and that the token is stored correctly (`localStorage`). |
-| **Agora token generation returns 401** | Ensure `AGORA_APP_ID
+| **Agora token generation returns 401** | Ensure `AGORA_APP_ID` and `AGORA_APP_CERTIFICATE` are correct and correspond to the same Agora project. |
+| **Frontend cannot reach API** | Confirm the Vite proxy configuration (`vite.config.js`) points to the correct backend port, and that both servers are running. |
+| **Build fails with TypeScript errors** | Run `pnpm type-check` to locate the exact issue; fix any type mismatches before re‑building. |
+
+If you encounter other problems, feel free to open an issue or join the discussion
