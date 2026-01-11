@@ -1,6 +1,6 @@
 # Budgenix (FinBuddy)  
 
-![Build Status](https://img.shields.io/github/actions/workflow/status/kaihere14/Budgenix/ci.yml?branch=main&label=CI) ![License](https://img.shields.io/github/license/kaihere14/Budgenix) ![Version](https://img.shields.io/github/package-json/v/kaihere14/Budgenix) ![Coverage](https://img.shields.io/codecov/c/github/kaihere14/Budgenix?label=coverage)  
+![Build Status](https://img.shields.io/github/actions/workflow/status/kaihere14/Budgenix/ci.yml?branch=main&label=CI) ![License](https://img.shields.io/github/license/kaihere14/Budgenix) ![Version](https://img.shields.io/github/package-json/v/kaihere14/Budgenix) ![Coverage](https://img.shields.io/codecov/c/github/kaihere14/Budgenix?label=coverage)
 
 **Budgenix** (aka *FinBuddy*) is a full‑stack personal finance assistant that lets users track expenses, manage budgets, and get AI‑powered insights in real‑time. The web client is built with React + Vite, TailwindCSS and daisyUI, while the backend is a TypeScript‑powered Express API backed by MongoDB. Integrated AI services (Google Gemini & Agora) provide smart expense categorisation, budgeting recommendations, and conversational assistance.
 
