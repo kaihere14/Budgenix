@@ -1,7 +1,7 @@
 # Budgenix  
 **A modern, full‑stack budgeting platform**  
 
-![Budgenix Logo](https://raw.githubusercontent.com/kaihere14/Budgenix/main/.github/logo.png)
+
 
 ---
 
