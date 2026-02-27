@@ -1,4 +1,4 @@
-![Budgenix Banner](https://via.placeholder.com/1200x200/007bff/ffffff?text=Budgenix+-+Smart+Financials)
+
 
 # Budgenix: Your AI-Powered Financial Companion
 
