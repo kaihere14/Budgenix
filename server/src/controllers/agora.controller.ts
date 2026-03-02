@@ -15,7 +15,9 @@ export const startAI = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Channel name is required" });
     }
 
-    console.log("📡 Using channel:", channel);
+
+    console.log("📡 Using channel:", channel)
+
 
     const expenses = await Expense.find({ userId }).select(
       "amount category date description type"
